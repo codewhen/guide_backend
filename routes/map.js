@@ -28,4 +28,6 @@ router
 
 router.route("/search").post(mapcontroller.searchMaps);
 
+router.route("/searchInsideMap/:map").post(mapcontroller.searchItemsInAMap);
+
 module.exports = router;

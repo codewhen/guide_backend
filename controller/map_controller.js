@@ -110,3 +110,21 @@ exports.searchMaps = async (req, res) => {
     });
   }
 };
+
+exports.searchItemsInAMap = async (req, res) => {
+  try {
+    const items = await MapItemModel.find({ map: req.params.map }).fuzzySearch(
+      req.body.query
+    );
+
+    res.status(200).json({
+      status: "success",
+      items: items,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err,
+    });
+  }
+};
