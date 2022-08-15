@@ -18,16 +18,6 @@ const MapSchema = new Schema({
       required: true,
     },
   ],
-  items: {
-    type: [
-      {
-        name: { type: String, required: true },
-        lat: { type: Number, required: true },
-        lon: { type: Number, required: true },
-      },
-    ],
-    required: true,
-  },
   lat: {
     type: Number,
     required: true,
