@@ -22,5 +22,22 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "uuid": "^8.3.2"
-  }
+  },
+  "description": "",
+  "main": "app.js",
+  "devDependencies": {
+    "eslint": "^8.22.0",
+    "eslint-config-google": "^0.14.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raysummee/guide_backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/raysummee/guide_backend/issues"
+  },
+  "homepage": "https://github.com/raysummee/guide_backend#readme"
 }

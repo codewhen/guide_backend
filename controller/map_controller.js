@@ -97,3 +97,19 @@ exports.searchMaps = async (req, res) => {
     });
   }
 };
+
+exports.searchItemsInAMap = async (req, res) => {
+  try {
+    const map = await MapModel.fuzzySearch(req.body.query);
+
+    res.status(200).json({
+      status: "success",
+      maps: map,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err,
+    });
+  }
+};
