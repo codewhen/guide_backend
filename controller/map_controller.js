@@ -49,14 +49,18 @@ exports.addMap = async (req, res) => {
 exports.updateMap = async (req, res) => {
   try {
     if (!!req.body.geojson) {
-      var geojsonsTemp = [];
-      for (var e in req.body.geojson) {
+      let geojsonsTemp = [];
+      for (const e of req.body.geojson) {
         const v = await Util.saveJson(e);
-        console.log(v);
         geojsonsTemp.push(v);
       }
       req.body.geojson = geojsonsTemp;
-      req.body.org = req.params.id;
+      req.body.org = req.user._id;
+    }
+    let items;
+    if (!!req.body.items) {
+      items = req.body.items;
+      req.body.items = null;
     }
 
     console.log(req.body);
@@ -65,6 +69,14 @@ exports.updateMap = async (req, res) => {
       { _id: req.params.map, org: req.params.id },
       req.body
     );
+
+    if (!!items) {
+      items = items.map((item) => {
+        return { ...item, map: req.params.map };
+      });
+      await MapItemModel.deleteMany({ map: req.params.map });
+      await MapItemModel.insertMany(items);
+    }
 
     res.status(201).json({
       status: "success",
