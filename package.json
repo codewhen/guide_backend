@@ -7,6 +7,8 @@
     "dev": "nodemon ./bin/www"
   },
   "dependencies": {
+    "@turf/shortest-path": "^6.5.0",
+    "@turf/turf": "^6.5.0",
     "bcrypt": "^5.0.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
@@ -21,6 +23,7 @@
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
+    "turf": "^3.0.14",
     "uuid": "^8.3.2"
   },
   "description": "",
