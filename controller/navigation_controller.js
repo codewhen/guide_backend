@@ -5,9 +5,12 @@ exports.getRoute = async (req, res) => {
     const start = req.body.start;
     const end = req.body.end;
     const obstacles = req.body.obstacles;
+    console.log(start);
+    console.log(end);
+    console.log(obstacles);
 
     var options = {
-      obstacles: turf.polygon([obstacles]),
+      obstacles: turf.featureCollection(obstacles),
     };
 
     var path = turf.shortestPath(start, end, options);
