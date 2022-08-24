@@ -5,6 +5,7 @@ const Util = require("../utils/base64");
 
 exports.addMap = async (req, res) => {
   try {
+    console.log(req);
     if (!!req.body.geojson) {
       let geojsonsTemp = [];
       for (const e of req.body.geojson) {
@@ -66,7 +67,7 @@ exports.updateMap = async (req, res) => {
     console.log(req.body);
 
     const map = await MapModel.updateOne(
-      { _id: req.params.map, org: req.params.id },
+      { _id: req.params.map, org: req.user._id },
       req.body
     );
 
@@ -93,7 +94,7 @@ exports.updateMap = async (req, res) => {
 
 exports.getMapsOfOrgs = async (req, res) => {
   try {
-    const map = await MapModel.find({ org: req.params.id });
+    const map = await MapModel.find({ org: req.user._id });
 
     res.status(200).json({
       status: "success",
