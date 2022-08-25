@@ -28,7 +28,6 @@ const MapSchema = new Schema({
   },
   thumbnailUrl: {
     type: String,
-    required: true,
   },
   org: {
     type: mongoose.Schema.Types.ObjectId,
