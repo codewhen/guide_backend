@@ -108,6 +108,29 @@ exports.getMapsOfOrgs = async (req, res) => {
   }
 };
 
+exports.getMapsNearby = async (req, res) => {
+  try {
+    const lat = req.body.lat;
+    const lon = req.body.lon;
+    const map = await MapModel.find();
+
+    const nearby = [...map].filter(
+      (map) => getDistanceBetweenPointsNew(lat, lon, map.lat, map.lon) < 10
+    );
+
+    res.status(200).json({
+      status: "success",
+      maps: nearby,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({
+      status: "fail",
+      message: err,
+    });
+  }
+};
+
 exports.searchMaps = async (req, res) => {
   try {
     const map = await MapModel.fuzzySearch(req.body.query);
@@ -140,4 +163,31 @@ exports.searchItemsInAMap = async (req, res) => {
       message: err,
     });
   }
+};
+
+const getDistanceBetweenPointsNew = (latFrom, lonFrom, latTo, lonTo) => {
+  const theta = lonFrom - lonTo;
+  let distance =
+    Math.sin(deg2rad(latFrom)) * Math.sin(deg2rad(latTo)) +
+    Math.cos(deg2rad(latFrom)) *
+      Math.cos(deg2rad(latTo)) *
+      Math.cos(deg2rad(theta));
+
+  distance = Math.acos(distance);
+  distance = rad2deg(distance);
+  distance = distance * 60 * 1.1515;
+
+  distance = distance * 1.609344;
+
+  return Math.round(distance, 2);
+};
+
+const deg2rad = (degrees) => {
+  var pi = Math.PI;
+  return degrees * (pi / 180);
+};
+
+const rad2deg = (radians) => {
+  var pi = Math.PI;
+  return radians * (180 / pi);
 };
