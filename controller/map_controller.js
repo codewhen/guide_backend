@@ -165,6 +165,23 @@ exports.searchItemsInAMap = async (req, res) => {
   }
 };
 
+exports.getAllItemsInAMap = async (req, res) => {
+  try {
+    const items = await MapItemModel.find({ map: req.params.map });
+
+    res.status(200).json({
+      status: "success",
+      items: items,
+    });
+  } catch (err) {
+    console.log(e);
+    res.status(400).json({
+      status: "fail",
+      message: err,
+    });
+  }
+};
+
 const getDistanceBetweenPointsNew = (latFrom, lonFrom, latTo, lonTo) => {
   const theta = lonFrom - lonTo;
   let distance =

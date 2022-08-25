@@ -30,6 +30,8 @@ router.route("/search").post(mapcontroller.searchMaps);
 
 router.route("/searchInsideMap/:map").post(mapcontroller.searchItemsInAMap);
 
+router.route("/getAllInsideMap/:map").post(mapcontroller.getAllItemsInAMap);
+
 router.route("/nearby").post(mapcontroller.getMapsNearby);
 
 module.exports = router;
