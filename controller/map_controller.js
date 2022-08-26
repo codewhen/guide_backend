@@ -1,7 +1,7 @@
 const { map } = require("../app");
 const MapItemModel = require("../models/mapItemModel");
 const MapModel = require("../models/mapModel");
-const Util = require("../utils/base64");
+const { uploadFile, saveJson } = require("../utils/base64");
 
 exports.addMap = async (req, res) => {
   try {
@@ -9,7 +9,7 @@ exports.addMap = async (req, res) => {
     if (!!req.body.geojson) {
       let geojsonsTemp = [];
       for (const e of req.body.geojson) {
-        const v = await Util.saveJson(e);
+        const v = await saveJson(e);
         geojsonsTemp.push(v);
       }
       req.body.geojson = geojsonsTemp;
@@ -23,14 +23,27 @@ exports.addMap = async (req, res) => {
 
     console.log(req.body);
 
+    console.log("items");
+    console.log(items);
+
     const map = await MapModel.create(req.body);
 
     console.log(map);
 
     if (!!items) {
-      items = items.map((item) => {
-        return { ...item, map: map._id };
-      });
+      items = await Promise.all(
+        items.map(async (item) => {
+          let image;
+          if (item.image) {
+            const v = await uploadFile(item.image, "item.filename.jpg");
+
+            console.log("v");
+            console.log(v);
+            image = v;
+          }
+          return { ...item, map: map._id, image };
+        })
+      );
       await MapItemModel.insertMany(items);
     }
 
@@ -52,7 +65,7 @@ exports.updateMap = async (req, res) => {
     if (!!req.body.geojson) {
       let geojsonsTemp = [];
       for (const e of req.body.geojson) {
-        const v = await Util.saveJson(e);
+        const v = await saveJson(e);
         geojsonsTemp.push(v);
       }
       req.body.geojson = geojsonsTemp;
@@ -72,8 +85,14 @@ exports.updateMap = async (req, res) => {
     );
 
     if (!!items) {
-      items = items.map((item) => {
-        return { ...item, map: req.params.map };
+      items = items.map(async (item) => {
+        let image;
+        if (item.image) {
+          const v = await uploadFile(item.image, item.filename);
+          console.log(v);
+          image = v;
+        }
+        return { ...item, map: req.params.map, image };
       });
       await MapItemModel.deleteMany({ map: req.params.map });
       await MapItemModel.insertMany(items);

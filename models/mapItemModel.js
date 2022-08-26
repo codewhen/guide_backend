@@ -8,6 +8,7 @@ const MapItemSchema = new Schema({
   lat: { type: Number, required: true },
   lon: { type: Number, required: true },
   desc: { type: String, required: true },
+  image: { type: String, required: true },
   map: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "map",
